@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JAXON | Fashion Model Portfolio</title>
+    
+    <!-- Premium Fashion Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    
+    <!-- GSAP for Premium Animations -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --bg-black: #030303;
+            --bg-dark: #0f0f0f;
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --accent: #e0e0e0; 
+            --font-display: 'Oswald', sans-serif;
+            --font-sans: 'Inter', sans-serif;
+            --glass-bg: rgba(3, 3, 3, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-black);
+            color: var(--text-main);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: color 0.3s ease;
+        }
+
+        a:hover {
+            color: var(--text-muted);
+        }
+
+        /* --- Navigation --- */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            padding: 1.5rem 4%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center; /* Centered content for better background visibility */
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 115%; /* Extra height for parallax */
+            object-fit: cover;
+            object-position: center 30%;
+            z-index: -2;
+            filter: contrast(1.1) brightness(0.85); /* Tuned for a moody, high-fashion look */
+        }
+
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* Gradient that fades out in the middle to let the face show, and darkens at the bottom */
+            background: linear-gradient(to bottom, rgba(3,3,3,0.6) 0%, rgba(3,3,3,0.1) 40%, rgba(3,3,3,0.9) 100%);
+            z-index: -1;
+        }
+
+        .hero-content {
+            text-align: center;
+            width: 100%;
+            margin-top: 15vh;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 12vw, 12rem);
+            line-height: 0.9;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 1rem;
+            overflow: hidden;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .hero-title span {
+            display: block;
+        }
+
+        .hero-subtitle {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 6px;
+            color: #d0d0d0;
+            overflow: hidden;
+            display: block;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.8);
+        }
+
+        /* --- Marquee Banner --- */
+        .marquee-wrapper {
+            background: var(--text-main);
+            color: var(--bg-black);
+            padding: 1.2rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-weight: 500;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: marquee 20s linear infinite;
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* --- Layout Utilities --- */
+        section {
+            padding: 8rem 5%;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            margin-bottom: 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-family: var(--font-display);
+            font-size: 4rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            line-height: 1;
+        }
+
+        /* --- Stats / Measurements Section --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 2rem;
+            background: var(--bg-dark);
+            padding: 4rem;
+            border-radius: 2px;
+            border: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 400;
+        }
+
+        /* --- Editorial Lookbook (Masonry) --- */
+        .gallery-container {
+            columns: 4 280px; /* Optimized for 9:16 vertical dominant layouts */
+            column-gap: 1.5rem;
+        }
+
+        .gallery-item {
+            margin-bottom: 1.5rem;
+            break-inside: avoid;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--bg-dark);
+        }
+
+        .gallery-item img {
+            transition: transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1), filter 0.5s ease;
+            filter: grayscale(20%);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.04);
+            filter: grayscale(0%);
+        }
+
+        .gallery-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 40%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .gallery-item:hover .gallery-overlay {
+            opacity: 1;
+        }
+
+        .gallery-overlay h4 {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 0.2rem;
+        }
+
+        .gallery-overlay p {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+
+        /* --- Digitals / Polaroids --- */
+        .digitals-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1.5rem;
+        }
+
+        .digital-item {
+            position: relative;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+            background: #111;
+        }
+
+        .digital-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(1.1) saturate(0.85); /* Gives that raw polaroid look */
+        }
+
+        /* --- About & Representation --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .about-text h2 {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 2rem;
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+        
+        .agencies {
+            margin-top: 3rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .agency h4 {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .agency p {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-main);
+            margin: 0;
+        }
+
+        /* --- Contact Section --- */
+        .contact {
+            background: var(--bg-dark);
+            text-align: center;
+            padding: 8rem 5%;
+            margin-top: 5rem;
+            border-top: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .contact-wrapper {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 4rem;
+            text-align: left;
+        }
+
+        .contact-form input,
+        .contact-form textarea {
+            width: 100%;
+            padding: 1rem 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            font-family: var(--font-sans);
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .contact-form input:focus,
+        .contact-form textarea:focus {
+            outline: none;
+            border-bottom-color: var(--text-main);
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.2rem 3rem;
+            border: 1px solid var(--text-main);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
+            transition: color 0.4s ease;
+            cursor: pointer;
+            background: transparent;
+            color: var(--text-main);
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--text-main);
+            transform: scaleY(0);
+            transform-origin: bottom;
+            transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
+            z-index: -1;
+        }
+
+        .btn:hover {
+            color: var(--bg-black);
+        }
+
+        .btn:hover::before {
+            transform: scaleY(1);
+        }
+
+        .btn-whatsapp {
+            border-color: #25D366;
+            color: #25D366;
+            gap: 12px;
+        }
+        
+        .btn-whatsapp::before {
+            background: #25D366;
+        }
+
+        /* --- Lightbox --- */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(3,3,3,0.98);
+            z-index: 2000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .lightbox.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .lightbox img {
+            max-width: 90%;
+            max-height: 90vh;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 2rem;
+            right: 3rem;
+            font-size: 3rem;
+            color: var(--text-main);
+            cursor: pointer;
+            font-family: var(--font-sans);
+            font-weight: 300;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 3rem 2rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+        }
+
+        /* --- Responsive --- */
+        @media (max-width: 1024px) {
+            .digitals-grid { grid-template-columns: repeat(2, 1fr); }
+            .about-grid { grid-template-columns: 1fr; gap: 4rem; }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .gallery-container { columns: 2 200px; }
+            .section-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+            .section-title { font-size: 3rem; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); padding: 2rem; }
+        }
+        
+        @media (max-width: 480px) {
+            .gallery-container { columns: 1; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">JAXON</div>
+        <div class="nav-links">
+            <a href="#stats">Stats</a>
+            <a href="#portfolio">Lookbook</a>
+            <a href="#digitals">Digitals</a>
+            <a href="#about">Profile</a>
+            <a href="#contact">Booking</a>
+        </div>
+    </nav>
+
+    <!-- Main Section (Hero) -->
+    <header class="hero">
+        <!-- Striking High-Fashion Streetwear Portrait Background -->
+        <img src="https://images.unsplash.com/photo-1618331835717-801e976710b2?q=80&w=2070&auto=format&fit=crop" class="hero-bg" alt="Male Model Editorial Portrait">
+        
+        <!-- Gradient Overlay to ensure text readability -->
+        <div class="hero-overlay"></div>
+        
+        <div class="hero-content">
+            <h1 class="hero-title">
+                <span class="gs-reveal">Jaxon</span>
+                <span class="gs-reveal">Vance</span>
+            </h1>
+            <span class="hero-subtitle gs-reveal">International Model & Talent</span>
+        </div>
+    </header>
+
+    <!-- Marquee Banner -->
+    <div class="marquee-wrapper">
+        <div class="marquee-content">
+            FASHION &nbsp; • &nbsp; EDITORIAL &nbsp; • &nbsp; STREETWEAR &nbsp; • &nbsp; RUNWAY &nbsp; • &nbsp; COMMERCIAL &nbsp; • &nbsp; FASHION &nbsp; • &nbsp; EDITORIAL &nbsp; • &nbsp; STREETWEAR &nbsp; • &nbsp; RUNWAY &nbsp; • &nbsp; COMMERCIAL &nbsp; • &nbsp; FASHION &nbsp; • &nbsp; EDITORIAL
+        </div>
+    </div>
+
+    <!-- Measurements / Stats -->
+    <section id="stats">
+        <div class="section-header gs-fade-up">
+            <h2 class="section-title">Measurements</h2>
+        </div>
+        <div class="stats-grid gs-fade-up">
+            <div class="stat-item">
+                <div class="stat-label">Height</div>
+                <div class="stat-value">6'2"</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Chest</div>
+                <div class="stat-value">39"</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Waist</div>
+                <div class="stat-value">31"</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Shoe (US)</div>
+                <div class="stat-value">11</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Hair</div>
+                <div class="stat-value">Brown</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-label">Eyes</div>
+                <div class="stat-value">Hazel</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Editorial Lookbook -->
+    <section id="portfolio">
+        <div class="section-header gs-fade-up">
+            <h2 class="section-title">Lookbook</h2>
+            <p style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;">Selected Works / 26</p>
+        </div>
+        
+        <div class="gallery-container">
+            <!-- 9:16 Vertical Dominant Layout for Fashion -->
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1550614000-4b95d4151b75?q=80&w=800&h=1422&auto=format&fit=crop" alt="Streetwear Campaign">
+                <div class="gallery-overlay">
+                    <h4>Urban Form</h4>
+                    <p>Streetwear Editorial</p>
+                </div>
+            </div>
+
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=800&h=1200&auto=format&fit=crop" alt="Textured Hair Grooming">
+                <div class="gallery-overlay">
+                    <h4>Grooming</h4>
+                    <p>Beauty / Hair</p>
+                </div>
+            </div>
+
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1529139574466-a303027c1d8b?q=80&w=800&h=1422&auto=format&fit=crop" alt="High Fashion Suit">
+                <div class="gallery-overlay">
+                    <h4>Tailored</h4>
+                    <p>Suiting Campaign</p>
+                </div>
+            </div>
+
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1534030635181-42db8122d103?q=80&w=800&h=800&auto=format&fit=crop" alt="Monochrome Portrait">
+                <div class="gallery-overlay">
+                    <h4>Shadows</h4>
+                    <p>Monochrome Study</p>
+                </div>
+            </div>
+
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?q=80&w=800&h=1422&auto=format&fit=crop" alt="Avant Garde Casual">
+                <div class="gallery-overlay">
+                    <h4>The Fall</h4>
+                    <p>AW26 Lookbook</p>
+                </div>
+            </div>
+
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1200&h=800&auto=format&fit=crop" alt="Cinematic Wide Shot">
+                <div class="gallery-overlay">
+                    <h4>Movement</h4>
+                    <p>Cinematic Series</p>
+                </div>
+            </div>
+            
+            <div class="gallery-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1504199367641-aba29b5129d8?q=80&w=800&h=1422&auto=format&fit=crop" alt="Denim Campaign">
+                <div class="gallery-overlay">
+                    <h4>Raw Denim</h4>
+                    <p>Apparel Mockup</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Digitals / Polaroids -->
+    <section id="digitals">
+        <div class="section-header gs-fade-up">
+            <h2 class="section-title">Digitals</h2>
+            <p style="color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem;">Unretouched / Natural Light</p>
+        </div>
+        <div class="digitals-grid">
+            <div class="digital-item gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=600&h=800&auto=format&fit=crop" alt="Digital Front Profile" class="polaroid-img">
+            </div>
+            <div class="digital-item gs-fade-up" style="transition-delay: 0.1s;">
+                <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=600&h=800&auto=format&fit=crop" alt="Digital Side Profile" class="polaroid-img">
+            </div>
+            <div class="digital-item gs-fade-up" style="transition-delay: 0.2s;">
+                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=600&h=800&auto=format&fit=crop" alt="Digital Full Body" class="polaroid-img">
+            </div>
+            <div class="digital-item gs-fade-up" style="transition-delay: 0.3s;">
+                <img src="https://images.unsplash.com/photo-1480429370139-e01abe113b80?q=80&w=600&h=800&auto=format&fit=crop" alt="Digital 3/4 Profile" class="polaroid-img">
+            </div>
+        </div>
+    </section>
+
+    <!-- Profile & Representation -->
+    <section id="about">
+        <div class="about-grid">
+            <div class="about-image gs-fade-up">
+                <img src="https://images.unsplash.com/photo-1617137968427-85924c800a22?q=80&w=800&h=1000&auto=format&fit=crop" alt="Model Backstage">
+            </div>
+            <div class="about-text gs-fade-up">
+                <h2>The Profile</h2>
+                <p>Based between Mumbai and London, Jaxon specializes in high-end streetwear, avant-garde editorial, and structured menswear silhouettes. With a strong background in visual aesthetics and modern brand rollouts, his on-camera presence is built for the modern digital era.</p>
+                <p>Known for adaptable styling—from textured grooming to sharp, clean-cut suiting—he brings a dynamic, kinetic energy to every set.</p>
+                
+                <div class="agencies">
+                    <div class="agency">
+                        <h4>Mother Agency</h4>
+                        <p>NEXT Models</p>
+                    </div>
+                    <div class="agency">
+                        <h4>Commercial</h4>
+                        <p>IMG London</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking / Contact -->
+    <section id="contact" class="contact">
+        <div class="contact-wrapper gs-fade-up">
+            <h2 class="section-title" style="font-size: 3rem; margin-bottom: 1rem;">Direct Booking</h2>
+            <p style="color: var(--text-muted);">For direct inquiries, campaigns, and lookbook mockups.</p>
+            
+            <form class="contact-form" onsubmit="event.preventDefault(); alert('Booking Request Sent.');">
+                <input type="text" placeholder="Brand / Agency Name" required>
+                <input type="email" placeholder="Contact Email" required>
+                <input type="text" placeholder="Project Type (e.g., Streetwear Campaign, E-com)">
+                <textarea placeholder="Provide details regarding dates, usage, and mood..." required></textarea>
+                
+                <button type="submit" class="btn">Submit Request</button>
+                
+                <a href="https://wa.me/1234567890?text=Hi%20Jaxon,%20reaching%20out%20regarding%20a%20booking%20inquiry." target="_blank" class="btn btn-whatsapp">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/>
+                    </svg>
+                    WhatsApp Booking
+                </a>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 JAXON VANCE. DESIGNED FOR THE MODERN WEB.</p>
+    </footer>
+
+    <!-- Lightbox Element -->
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close">&times;</span>
+        <img src="" alt="Fullscreen view" id="lightbox-img">
+    </div>
+
+    <!-- Scripts for Animations & Interactivity -->
+    <script>
+        // Register GSAP ScrollTrigger
+        gsap.registerPlugin(ScrollTrigger);
+
+        // 1. Hero Load Animations
+        const tl = gsap.timeline();
+        tl.from(".hero-bg", { scale: 1.05, duration: 2.5, ease: "power2.out" })
+          .from(".gs-reveal", { 
+              y: 80, 
+              opacity: 0, 
+              duration: 1.2, 
+              stagger: 0.15, 
+              ease: "power4.out" 
+          }, "-=2");
+
+        // 2. Parallax Effect on Hero Image
+        gsap.to(".hero-bg", {
+            yPercent: 15,
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".hero",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
+            }
+        });
+
+        // 3. Scroll Reveal Elements (Fade Up)
+        const fadeUpElements = gsap.utils.toArray('.gs-fade-up');
+        fadeUpElements.forEach(elem => {
+            gsap.from(elem, {
+                scrollTrigger: {
+                    trigger: elem,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 40,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
+        });
+
+        // 4. Vanilla JS Lightbox Implementation for Portfolio & Digitals
+        const galleryItems = document.querySelectorAll('.gallery-item img, .polaroid-img');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const closeBtn = document.querySelector('.lightbox-close');
+
+        galleryItems.forEach(item => {
+            item.addEventListener('click', (e) => {
+                // Get the high-res version by modifying unsplash URL parameters
+                let imgSrc = e.target.src.replace('&w=800', '&w=1600').replace('&w=600', '&w=1200').replace('&h=1422', '').replace('&h=1200', '').replace('&h=800', '');
+                lightboxImg.src = imgSrc;
+                lightbox.classList.add('active');
+                document.body.style.overflow = 'hidden'; 
+            });
+        });
+
+        const closeLightbox = () => {
+            lightbox.classList.remove('active');
+            document.body.style.overflow = 'auto'; 
+        };
+
+        closeBtn.addEventListener('click', closeLightbox);
+        lightbox.addEventListener('click', (e) => {
+            if(e.target !== lightboxImg) {
+                closeLightbox();
+            }
+        });
+        
+        document.addEventListener('keydown', (e) => {
+            if(e.key === "Escape" && lightbox.classList.contains('active')) {
+                closeLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
